@@ -1,4 +1,4 @@
-import { takeLatest, put } from 'redux-saga/effects';
+import { takeLatest, put, call } from 'redux-saga/effects';
 import api from "../api/postcode-jp";
 
 // Actions
@@ -32,15 +32,17 @@ export default function address(state = initialState, action) {
 }
 
 // Action Creators
-export const getAddressRequested = (zipCode) => (
+export const getAddressRequested = (zipCode, meta) => (
   {
     type: GET_ADDRESS_REQUESTED,
     payload: { zipCode },
+    meta
   }
 );
 
 // Sagas
-function* getAddress(action) {
+function* getAddress(context, action) {
+  const meta = action.meta || {};
   const res = yield api.getAddress(action.payload.zipCode);
   if (res.data && res.data.length > 0) { // 成功： 指定された郵便番号に該当する住所が存在した。
     yield put({
@@ -51,6 +53,8 @@ function* getAddress(action) {
         error: false,
       }
     });
+    if (meta.pageOnSuccess)
+      yield call(context.history.push, meta.pageOnSuccess);
   } else { // 失敗： 指定された郵便番号に該当する住所が存在しなかった。
     const message = res.validationErrors ? res.validationErrors[0].message : null;
     yield put({
@@ -58,11 +62,13 @@ function* getAddress(action) {
       payload: new Error(message),
       error: true,
     });
+    if (meta.pageOnFailure)
+      yield call(context.history.push, meta.pageOnFailure);
   }
 };
 
-function* watchLastGetZipData() {
-  yield takeLatest(GET_ADDRESS_REQUESTED, getAddress);
+function* watchLastGetZipData(context) {
+  yield takeLatest(GET_ADDRESS_REQUESTED, getAddress, context);
 }
 
 export const sagas = [

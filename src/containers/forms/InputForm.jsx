@@ -17,7 +17,11 @@ class InputForm extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    this.props.dispatch(getAddressRequested(this.state.zipCode));
+    const meta = {
+      pageOnSuccess: '/success',
+      pageOnFailure: '/failure'
+    };
+    this.props.dispatch(getAddressRequested(this.state.zipCode, meta));
   }
 
   render() {

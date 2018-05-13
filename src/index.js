@@ -1,18 +1,19 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Router, Route, Switch } from 'react-router-dom';
 import { applyMiddleware, createStore } from 'redux';
 import { Provider } from 'react-redux';
 import { createLogger } from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
 import { all } from 'redux-saga/effects';
+import createHistory from 'history/createBrowserHistory';
 import { InputForm, Success, Failure } from './containers';
 import address, { initialState, sagas } from "./ducks/address";
 
 const allSagas = [ ...sagas, ];
 
-function* rootSaga() {
-  yield all(allSagas.map(f => f()));
+function* rootSaga(context) {
+  yield all(allSagas.map(f => f(context)));
 }
 
 const sagaMiddleware = createSagaMiddleware();
@@ -23,10 +24,12 @@ const store = createStore(
   applyMiddleware(sagaMiddleware, createLogger()),
 );
 
-sagaMiddleware.run(rootSaga);
+const history = createHistory();
+
+sagaMiddleware.run(rootSaga, { history });
 
 const App = () => (
-  <BrowserRouter>
+  <Router history={history}>
     <Provider store={store}>
       <Switch>
         <Route exact path="/" component={ InputForm } />
@@ -34,7 +37,7 @@ const App = () => (
         <Route exact path="/failure" component={ Failure } />
       </Switch>
     </Provider>
-  </BrowserRouter>
+  </Router>
 );
 
 render(<App />, document.querySelector('#app'));
