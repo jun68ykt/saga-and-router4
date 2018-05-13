@@ -1,0 +1,16 @@
+div#app {
+  padding-top: 16px;
+  padding-left: 12px;
+}
+
+input[type="text"] {
+  font-size: 14pt;
+  margin-right: 10px;
+  padding: 3px;
+}
+
+input[type="submit"] {
+  font-size: 12pt;
+  background-color: #CCC;
+  color: #000;
+}
