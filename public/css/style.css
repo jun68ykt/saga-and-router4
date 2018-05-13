@@ -14,3 +14,11 @@ input[type="submit"] {
   background-color: #CCC;
   color: #000;
 }
+
+.form { position: relative; }
+.loading { color: #888; }
+.loading-icon { height: 32px; position: absolute; bottom: 0;}
+.message { padding-left: 10px; font-size: 16pt; color: white; }
+.success { background-color: #005B98; }
+.failed { background-color: #F20000; }
+.em { font-weight: bold; }

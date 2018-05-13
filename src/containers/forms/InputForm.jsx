@@ -5,7 +5,7 @@ import { getAddressRequested } from "../../ducks/address";
 class InputForm extends Component {
   constructor(props) {
     super(props);
-    this.state = { zipCode: '' };
+    this.state = { zipCode: this.props.zipCode || '' };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -34,7 +34,10 @@ class InputForm extends Component {
             value={this.state.zipCode}
             placeholder="半角数字で入力"
             onChange={this.handleChange} />
-          <input type="submit" value="送信" />
+          { this.props.apiIsProcessing ?
+            <span className="loading">処理中･･･
+              <img alt='loading' className="loading-icon" src='/img/loading.gif'/></span>  :
+            <input type="submit" value="送信" /> }
         </form>
       </div>
     );
