@@ -1,3 +1,6 @@
+import { takeLatest, put } from 'redux-saga/effects';
+import api from "../api/postcode-jp";
+
 // Actions
 const GET_ADDRESS_REQUESTED = 'saga-and-router4/address/GET_ADDRESS_REQUESTED'; // 住所の取得を要求した。
 const GET_ADDRESS_SUCCEEDED = 'saga-and-router4/address/GET_ADDRESS_SUCCEEDED'; // 住所の取得が成功した。
@@ -35,3 +38,33 @@ export const getAddressRequested = (zipCode) => (
     payload: { zipCode },
   }
 );
+
+// Sagas
+function* getAddress(action) {
+  const res = yield api.getAddress(action.payload.zipCode);
+  if (res.data && res.data.length > 0) { // 成功： 指定された郵便番号に該当する住所が存在した。
+    yield put({
+      type: GET_ADDRESS_SUCCEEDED,
+      payload: {
+        zipCode: action.payload.zipCode,
+        address: res.data[0].allAddress,
+        error: false,
+      }
+    });
+  } else { // 失敗： 指定された郵便番号に該当する住所が存在しなかった。
+    const message = res.validationErrors ? res.validationErrors[0].message : null;
+    yield put({
+      type: GET_ADDRESS_FAILED,
+      payload: new Error(message),
+      error: true,
+    });
+  }
+};
+
+function* watchLastGetZipData() {
+  yield takeLatest(GET_ADDRESS_REQUESTED, getAddress);
+}
+
+export const sagas = [
+  watchLastGetZipData,
+];
