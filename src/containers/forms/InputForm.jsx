@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
+import { getAddressRequested } from "../../ducks/address";
 
 class InputForm extends Component {
   constructor(props) {
@@ -15,7 +17,7 @@ class InputForm extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    console.log(`郵便番号 ${this.state.zipCode} の住所取得を要求`); // TODO: dipatch で GET_ADDRESS_REQUESTEDを送出
+    this.props.dispatch(getAddressRequested(this.state.zipCode));
   }
 
   render() {
@@ -35,4 +37,8 @@ class InputForm extends Component {
   }
 }
 
-export default InputForm;
+function mapStateToProps(state) {
+  return state
+}
+
+export default connect(mapStateToProps)(InputForm);
