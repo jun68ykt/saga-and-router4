@@ -11,3 +11,10 @@
 # お借りしているAPI
 
 - [PostcodeJP API](https://postcode-jp.com/)
+
+# how to install and run
+
+- git clone https://github.com/jun68ykt/saga-and-router4.git
+- cd saga-and-router4
+- yarn install
+- yarn start
