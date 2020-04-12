@@ -7,6 +7,7 @@
 - Qiita
   - [Reactサンプル：redux-sagaとreact-router v4でWebAPIの結果に応じて画面遷移させる。（前編）](https://qiita.com/jun68ykt/items/f2dc1f7c076c76188834)
   - [Reactサンプル：redux-sagaとreact-router v4でWebAPIの結果に応じて画面遷移させる。（後編）](https://qiita.com/jun68ykt/items/541cc8247900e126ac5b)
+  - [Reactサンプル：redux-sagaとreact-router v4（をv5にしたうえ）でWebAPIの結果に応じて画面遷移させる。（更新情報）](https://qiita.com/jun68ykt/items/86a0bc2ffcfcd8e9f70c)
 
 # お借りしているAPI
 
