@@ -56,10 +56,9 @@ function* getAddress(context, action) {
     if (meta.pageOnSuccess)
       yield call(context.history.push, meta.pageOnSuccess);
   } else { // 失敗： 指定された郵便番号に該当する住所が存在しなかった。
-    const message = res.validationErrors ? res.validationErrors[0].message : null;
     yield put({
       type: GET_ADDRESS_FAILED,
-      payload: new Error(message),
+      payload: new Error('指定された郵便番号に該当する住所は存在しません。'),
       error: true,
     });
     if (meta.pageOnFailure)
